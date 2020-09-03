@@ -10,4 +10,6 @@ public class CreateInvoiceRequest {
 
     private InvoiceType type;
 
+    private String countryCode;
+
 }

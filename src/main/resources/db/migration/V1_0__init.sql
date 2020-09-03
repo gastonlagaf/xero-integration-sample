@@ -1,7 +1,7 @@
 CREATE TABLE xero_tokens(
     id BIGSERIAL PRIMARY KEY,
     refresh_token VARCHAR NOT NULL,
-    expiry BIGINT NOT NULL,
+    expiry INT NOT NULL,
     tenant_id VARCHAR NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL

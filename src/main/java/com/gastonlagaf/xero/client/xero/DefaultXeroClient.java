@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.threeten.bp.LocalDate;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,12 +80,13 @@ public class DefaultXeroClient implements XeroClient {
 
     @SneakyThrows
     @Override
-    public String createInvoice(AccountingContact accountingContact, InvoiceType type) {
+    public String createInvoice(AccountingContact accountingContact, InvoiceType type, BigDecimal fee) {
         XeroAuthCredentials token = xeroTokenService.getCredentials();
         Contact contact = getContact(accountingContact.getExternalId());
 
         LineItem item = new LineItem()
-                .description(type.name()).unitAmount(type.getAmount().doubleValue()).taxType("INPUT").accountCode("200");
+                .description(type.name()).unitAmount(type.getAmount().doubleValue())
+                .taxAmount(fee.doubleValue()).accountCode("200");
         Invoice invoice = new Invoice()
                 .sentToContact(true).contact(contact).addLineItemsItem(item)
                 .status(Invoice.StatusEnum.AUTHORISED).type(Invoice.TypeEnum.ACCREC);
@@ -132,6 +134,12 @@ public class DefaultXeroClient implements XeroClient {
         Contacts contactList = new Contacts().addContactsItem(contact);
         return accountingApi.createContacts(token.getAccessToken(), token.getTenantId(), contactList, true)
                 .getContacts().stream().findFirst().orElseThrow().getContactID().toString();
+    }
+
+    @Override
+    public BigDecimal getInvoiceTotal(String invoiceId) {
+        Double doubleValue = getInvoice(invoiceId).getTotal();
+        return new BigDecimal(doubleValue.toString());
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.gastonlagaf.xero.controller;
 import com.gastonlagaf.xero.controller.model.InvoiceDto;
 import com.gastonlagaf.xero.controller.model.request.CreateAccountingContactRequest;
 import com.gastonlagaf.xero.controller.model.request.CreateInvoiceRequest;
+import com.gastonlagaf.xero.controller.model.request.InvoicePaymentRequest;
 import com.gastonlagaf.xero.entity.Invoice;
 import com.gastonlagaf.xero.service.AccountingService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,13 @@ public class AccountingController {
 
     @PostMapping("/invoice")
     public InvoiceDto createInvoice(@RequestBody CreateInvoiceRequest request) {
-        Invoice invoice = accountingService.createInvoice(request.getEmail(), request.getType());
+        Invoice invoice = accountingService.createInvoice(request.getEmail(), request.getType(), request.getCountryCode());
         return new InvoiceDto(invoice);
     }
 
     @PostMapping("/invoice/{invoiceId}/pay")
-    public InvoiceDto payInvoice(@PathVariable Long invoiceId) {
-        Invoice invoice = accountingService.payInvoice(invoiceId);
+    public InvoiceDto payInvoice(@PathVariable Long invoiceId, @RequestBody InvoicePaymentRequest request) {
+        Invoice invoice = accountingService.payInvoice(invoiceId, request.getPaymentToken());
         return new InvoiceDto(invoice);
     }
 
