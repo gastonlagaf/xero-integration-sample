@@ -38,7 +38,8 @@ public class DefaultStripeClient implements StripeClient {;
             Charge.create(params);
         } catch (StripeException ex) {
             log.error(ex.getCode());
-            throw new PaymentException(ChargeErrorMapping.get(ex.getStripeError().getDeclineCode()));
+            String message = ChargeErrorMapping.get(ex.getStripeError().getDeclineCode(), ex.getStripeError().getMessage());
+            throw new PaymentException(message);
         }
     }
 

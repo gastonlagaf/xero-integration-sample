@@ -11,7 +11,7 @@ public class EuCountryList {
             "GI", "GR", "GL", "GG", "VA", "HU", "IS", "IE", "IM", "IL", "IT", "JE", "LV", "LI", "LT", "LU", "MT", "MC",
             "NL", "NO", "PL", "PT", "RO", "PM", "SM", "SK", "SI", "ES", "SE", "TR", "GB");
 
-    public boolean isEuCountry(String countryCode) {
+    public boolean contains(String countryCode) {
         return set.contains(countryCode.toUpperCase());
     }
 

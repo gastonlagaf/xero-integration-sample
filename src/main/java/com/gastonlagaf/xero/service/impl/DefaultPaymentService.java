@@ -23,7 +23,7 @@ public class DefaultPaymentService implements PaymentService {
 
     @Override
     public BigDecimal calculateFees(BigDecimal originalAmount, String countryCode) {
-        Fee fee = EuCountryList.isEuCountry(countryCode) ? EU_FEE : NON_EU_FEE;
+        Fee fee = EuCountryList.contains(countryCode) ? EU_FEE : NON_EU_FEE;
         BigDecimal numerator = originalAmount.add(fee.fixedAmount);
         BigDecimal denominator = BigDecimal.ONE.subtract(fee.percent);
         return numerator.divide(denominator, RoundingMode.CEILING)

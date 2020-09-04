@@ -57,7 +57,11 @@ public class ChargeErrorMapping {
     );
 
     public String get(String key) {
-        return map.getOrDefault(key, "Unknown payment error");
+        return get(key, null);
+    }
+
+    public String get(String key, String defaultValue) {
+        return map.getOrDefault(key, null != defaultValue ? defaultValue : "Unknown payment error");
     }
 
 }
